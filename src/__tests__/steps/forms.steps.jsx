@@ -120,7 +120,9 @@ export const FormProjectSteps = ({ given: Given, when: When, then: Then }) => {
     const usernameElement = screen.getByTestId('username'); // Replace with actual selector
     userEvent.click(usernameElement);
   });
+  Then(/^the "(.*)" field should show the clicked user's (.*)$/, (arg0, arg1) => {
 
+  });
   
 };
 export default FormProjectSteps;
