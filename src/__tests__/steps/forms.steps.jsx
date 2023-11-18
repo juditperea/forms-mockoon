@@ -42,7 +42,6 @@ export const FormProjectSteps = ({ given: Given, when: When, then: Then }) => {
   Then(/^success-message should show the "text": "(.*)"$/, (arg1) => {
     expect(screen.getByTestId("success-message")).toHaveTextContent(arg1);
   });
-  
   // Scenario: User clears the form
 
   When("the user clicks the clear button", () => {
@@ -100,5 +99,28 @@ export const FormProjectSteps = ({ given: Given, when: When, then: Then }) => {
       expect(true).toBe(true); 
     }
   });
+
+  //Mockoon
+
+  Then('the app fetches data from the mockoon API', async () => {
+    // Implement fetching data from the Mockoon API
+    // Assume that the app fetches data when it mounts
+    // You may need to mock the API response for testing purposes
+    // Example: jest.mock('./api', () => ({ fetchData: jest.fn(() => Promise.resolve(mockedData)) }));
+  });
+  
+  Then('the app displays 10 fetched mock users', () => {
+    // Implement checking if 10 mock users are displayed
+    // Assume that the app renders a list of users when it mounts
+    // You may need to mock the API response for testing purposes
+  });
+  
+  When('the user clicks on the mocked user username', async () => {
+    // Assume there's a clickable element for each user's username
+    const usernameElement = screen.getByTestId('username'); // Replace with actual selector
+    userEvent.click(usernameElement);
+  });
+
+  
 };
 export default FormProjectSteps;

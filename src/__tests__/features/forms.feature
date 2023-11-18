@@ -4,6 +4,25 @@ Feature: Creating a form app for user interaction with React
 
     Given the user opens the app
 
+  Scenario: The app fetches data from the mockoon API
+
+    Then the app fetches data from the mockoon API
+    
+  Scenario: The app displays mock users
+
+    Then the app displays 10 fetched mock users
+
+  Scenario: The mocked data is shown in correct fields
+
+    When the user clicks on the mocked user username
+    Then the "username" field should show the clicked user's "<username>"
+    And the "firstname" field should show the clicked user's "<firstname>"
+    And the "surname" field should show the clicked user's "<surname>"
+    And the "country" field should show the clicked user's "<country>"
+    And the "city" field should show the clicked user's "<city>"
+    And the "street" field should show the clicked user's "<street>"
+    And the "id" field should show the clicked user's "<id>"
+
   Scenario: Fields are empty
 
     Then the "username" field should be empty
