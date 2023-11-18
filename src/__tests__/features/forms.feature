@@ -14,7 +14,7 @@ Feature: Creating a form app for user interaction with React
     And the "street" field should be empty
     And the "id" field should be empty
 
-@Skip
+
   Scenario Outline: Success message is shown
 
     When the user enters "<username>" on "username"

@@ -1,2 +1,2 @@
-import helloWorldSteps from './helloWorld.steps.jsx'
-export default [ helloWorldSteps]
+import formAppSteps from './forms.steps.jsx'
+export default [ formAppSteps]
