@@ -8,6 +8,7 @@ import {
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom";
 import FormApp from "../../components/FormApp";
+global.fetch = jest.fn();
 
 export const FormProjectSteps = ({ given: Given, when: When, then: Then }) => {
   Given("the user opens the app", () => {
@@ -39,9 +40,13 @@ export const FormProjectSteps = ({ given: Given, when: When, then: Then }) => {
     fireEvent.click(screen.getByTestId("submit-button"));
   });
 
-  Then(/^success-message should show the "text": "(.*)"$/, (arg1) => {
-    expect(screen.getByTestId("success-message")).toHaveTextContent(arg1);
+  Then(/^success-message should show the "text": "(.*)"$/, async (arg1) => {
+    await waitFor(() => {
+      const actualText = screen.getByTestId("success-message").textContent.trim();
+      expect(actualText).toBe(arg1);
+    });
   });
+  
   // Scenario: User clears the form
 
   When("the user clicks the clear button", () => {
@@ -102,27 +107,68 @@ export const FormProjectSteps = ({ given: Given, when: When, then: Then }) => {
 
   //Mockoon
 
-  Then('the app fetches data from the mockoon API', async () => {
-    // Implement fetching data from the Mockoon API
-    // Assume that the app fetches data when it mounts
-    // You may need to mock the API response for testing purposes
-    // Example: jest.mock('./api', () => ({ fetchData: jest.fn(() => Promise.resolve(mockedData)) }));
+  Then('the app fetches data from the Mockoon API', async () => {
+    // Mock the API response for testing purposes
+    global.fetch = jest.fn().mockResolvedValue({
+      json: jest.fn().mockResolvedValue(mockedData), // Replace mockedData with your actual mock data
+    });
+    render(<FormApp />);
+    
+    // Wait for data to be fetched (adjust timeout as needed)
+    await waitFor(() => {
+      expect(global.fetch).toHaveBeenCalledTimes(1);
+    });
   });
   
-  Then('the app displays 10 fetched mock users', () => {
-    // Implement checking if 10 mock users are displayed
-    // Assume that the app renders a list of users when it mounts
-    // You may need to mock the API response for testing purposes
-  });
-  
-  When('the user clicks on the mocked user username', async () => {
-    // Assume there's a clickable element for each user's username
-    const usernameElement = screen.getByTestId('username'); // Replace with actual selector
-    userEvent.click(usernameElement);
-  });
-  Then(/^the "(.*)" field should show the clicked user's (.*)$/, (arg0, arg1) => {
 
+  Then('the app displays 10 fetched mock users', async () => {
+    // Mock the API response with 10 users (adjust as needed)
+    const mockedData = '...'; // Replace with your actual mock data
+    global.fetch = jest.fn().mockResolvedValue({
+      json: jest.fn().mockResolvedValue(mockedData),
+    });
+    render(<FormApp />);
+    
+    // Wait for data to be fetched (adjust timeout as needed)
+    await waitFor(() => {
+      expect(global.fetch).toHaveBeenCalledTimes(1);
+    });
+  
+    // Verify that 10 users are displayed
+    await waitFor(() => {
+  const userElements = screen.getAllByTestId('mock-user');
+  expect(userElements).toHaveLength(10);
+});
   });
   
-};
+
+  When('the user clicks on the mocked user username', async () => {
+  // Mock the API response with a single user (adjust as needed)
+  const clickedUser = { username: mockuser.username, name: mockUser.personal_data.name,
+    surname: mockUser.personal_data.surname,
+    country: mockUser.country,
+    city: mockUser.city,
+    street: mockUser.street,
+    id: mockUser.user_id};
+  global.fetch = jest.fn().mockResolvedValue({
+    json: jest.fn().mockResolvedValue([clickedUser]),
+  });
+
+  render(<FormApp />);
+
+  // Wait for data to be fetched (adjust timeout as needed)
+  await waitFor(() => {
+    expect(global.fetch).toHaveBeenCalledTimes(1);
+  });
+
+  // Click on the mocked user's username
+  userEvent.click(screen.getByTestId(clickedUser.username)); // Adjust the selector based on your component
+});
+
+Then(/^the "(.*)" field should show the clicked user's (.*)$/, (field, value) => {
+  const fieldElement = screen.getByTestId(field); // Assuming the field has a data-testid attribute
+  expect(fieldElement).toHaveValue(value);
+});
+}
+
 export default FormProjectSteps;
