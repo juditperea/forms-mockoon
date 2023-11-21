@@ -272,7 +272,7 @@ function FormApp () {
         <ul>
           {mockUsers.map((user, index) => (
             <li key={index} onClick={() => handleMockUserClick(user)}>
-              {user.username}
+              <div data-testid="mocked-username">{user.username}</div>
             </li>
           ))}
         </ul>

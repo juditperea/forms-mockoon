@@ -5,6 +5,7 @@ import {
   fireEvent,
   waitFor,
 } from "@testing-library/react";
+import { act } from 'react-dom/test-utils';
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom";
 import FormApp from "../../components/FormApp";
@@ -12,6 +13,33 @@ global.fetch = jest.fn();
 
 export const FormProjectSteps = ({ given: Given, when: When, then: Then }) => {
   Given("the user opens the app", () => {
+     // Define mockUser with the required properties
+  const mockUser = {
+    username: 'mockedUsername',
+    personal_data: {
+      name: 'John',
+      surname: 'Doe',
+    },
+    country: 'USA',
+    city: 'New York',
+    street: '123 Street',
+    user_id: '12345',
+  };
+
+  // Mock the API response with a single user
+  const clickedUser = {
+    username: mockUser.username,
+    name: mockUser.personal_data?.name || '',
+    surname: mockUser.personal_data?.surname || '',
+    country: mockUser.country,
+    city: mockUser.city,
+    street: mockUser.street,
+    id: mockUser.user_id,
+  };
+
+  global.fetch = jest.fn().mockResolvedValue({
+    json: jest.fn().mockResolvedValue([clickedUser]),
+  });
     render(<FormApp />);
   });
 
@@ -110,7 +138,7 @@ export const FormProjectSteps = ({ given: Given, when: When, then: Then }) => {
   Then('the app fetches data from the Mockoon API', async () => {
     // Mock the API response for testing purposes
     global.fetch = jest.fn().mockResolvedValue({
-      json: jest.fn().mockResolvedValue(mockedData), // Replace mockedData with your actual mock data
+      json: jest.fn().mockResolvedValue(mockUser), // Replace mockedData with your actual mock data
     });
     render(<FormApp />);
     
@@ -123,9 +151,9 @@ export const FormProjectSteps = ({ given: Given, when: When, then: Then }) => {
 
   Then('the app displays 10 fetched mock users', async () => {
     // Mock the API response with 10 users (adjust as needed)
-    const mockedData = '...'; // Replace with your actual mock data
+    const mockUser = '...'; // Replace with your actual mock data
     global.fetch = jest.fn().mockResolvedValue({
-      json: jest.fn().mockResolvedValue(mockedData),
+      json: jest.fn().mockResolvedValue(mockUser),
     });
     render(<FormApp />);
     
@@ -136,35 +164,42 @@ export const FormProjectSteps = ({ given: Given, when: When, then: Then }) => {
   
     // Verify that 10 users are displayed
     await waitFor(() => {
-  const userElements = screen.getAllByTestId('mock-user');
+  const userElements = screen.getAllByTestId('mocked-username');
   expect(userElements).toHaveLength(10);
 });
   });
   
 
+
   When('the user clicks on the mocked user username', async () => {
-  // Mock the API response with a single user (adjust as needed)
-  const clickedUser = { username: mockuser.username, name: mockUser.personal_data.name,
-    surname: mockUser.personal_data.surname,
-    country: mockUser.country,
-    city: mockUser.city,
-    street: mockUser.street,
-    id: mockUser.user_id};
-  global.fetch = jest.fn().mockResolvedValue({
-    json: jest.fn().mockResolvedValue([clickedUser]),
+      // Mock the API response with a single user
+  const mockUser = {
+    username: 'mockedUsername',
+      name: 'John',
+      surname: 'Doe',
+    country: 'USA',
+    city: 'New York',
+    street: '123 Street',
+    user_id: '12345',
+  };
+
+  // Mock the handleMockUserClick function
+  const handleMockUserClick = jest.fn();
+
+  // Render the FormApp component
+  act(() => {
+    render(<FormApp handleMockUserClick={handleMockUserClick} />);
   });
-
-  render(<FormApp />);
-
-  // Wait for data to be fetched (adjust timeout as needed)
-  await waitFor(() => {
-    expect(global.fetch).toHaveBeenCalledTimes(1);
-  });
-
-  // Click on the mocked user's username
-  userEvent.click(screen.getByTestId(clickedUser.username)); // Adjust the selector based on your component
+ // Wait for the element to be available in the DOM
+ await waitFor(() => {
+  const mockedUserUsernameElements = screen.queryAllByTestId('mocked-username');
+  fireEvent.click(mockedUserUsernameElements[0]); // Interact with the first element
 });
 
+// Assert that the handleMockUserClick function was called with the correct mockUser
+expect(handleMockUserClick).toHaveBeenCalledWith(mockUser);
+});
+  
 Then(/^the "(.*)" field should show the clicked user's (.*)$/, (field, value) => {
   const fieldElement = screen.getByTestId(field); // Assuming the field has a data-testid attribute
   expect(fieldElement).toHaveValue(value);

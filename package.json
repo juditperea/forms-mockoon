@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@testing-library/user-event": "^14.5.0",
+    "act": "^0.0.6",
     "cucumber": "^6.0.7",
     "http-proxy-middleware": "^2.0.6",
     "jest-dom": "^4.0.0",
