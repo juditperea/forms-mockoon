@@ -155,23 +155,30 @@ function FormApp () {
   
   
 
+  
   useEffect(() => {
     // Fetch Mockoon data when the component mounts
     const fetchData = async () => {
       try {
-        const response = await fetch('http://localhost:4090/api/v1/account/')
-        const data = await response.json()
-        // Fetch 10 random users from the response
-        const randomUsers = getRandomUsers(data, 10)
-        setMockUsers(randomUsers)
+        const response = await fetch('http://localhost:4090/api/v1/account/');
+        
+        const responseData = await response.json();
+        console.log('responseData:', responseData);
+        // Check if responseData is not undefined or null
+        if (responseData) {
+          // Fetch 10 random users from the array
+          const randomUsers = getRandomUsers(responseData, 10);
+          
+          setMockUsers(randomUsers);
+        }
       } catch (error) {
-        console.error('Error fetching Mockoon data:', error)
+        console.error('Error fetching Mockoon data:', error.message);
       }
     };
-
-    fetchData()
-
-  }, [])
+  
+    fetchData();
+  }, []);
+  
 
   const handleMockUserClick = (mockUser) => {
     setFormData({
@@ -186,11 +193,18 @@ function FormApp () {
   }
   
 
-  const getRandomUsers = (users, count) => {
-    const shuffled = users.sort(() => 0.5 - Math.random());
-    return shuffled.slice(0, count)
-  }
-
+  const getRandomUsers = (responseData, count) => {
+    // Create a copy of the array to avoid modifying the original array
+    const userArray = [...responseData];
+    // Shuffle the copied array
+    const shuffled = userArray.sort(() => 0.5 - Math.random());
+  
+  
+    // Return the sliced array
+    return shuffled.slice(0, count);
+  };
+  
+  
   return (
     <div>
       <form>
