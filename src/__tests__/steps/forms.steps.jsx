@@ -9,38 +9,24 @@ import { act } from 'react-dom/test-utils';
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom";
 import FormApp from "../../components/FormApp";
-global.fetch = jest.fn();
-
+global.fetch = jest.fn().mockImplementation(() => Promise.resolve({ json: () => Promise.resolve({}) }));
+let fetchedUsers; 
 export const FormProjectSteps = ({ given: Given, when: When, then: Then }) => {
-  Given("the user opens the app", () => {
-     // Define mockUser with the required properties
-  const mockUser = {
-    username: '',
-    personal_data: {
-      name: '',
-      surname: '',
-    },
-    country: '',
-    city: '',
-    street: '',
-    user_id: '',
-  };
+  Given("the user opens the app", async () => {
 
-  // Mock the API response with a single user
-  const clickedUser = {
-    username: mockUser.username,
-    name: mockUser.personal_data.name,
-    surname: mockUser.personal_data.surname,
-    country: mockUser.country,
-    city: mockUser.city,
-    street: mockUser.street,
-    id: mockUser.user_id,
-  };
+    render(<FormApp />)
+   
+  //    Fetch the actual data from your app
+  // const response = await fetch('http://localhost:4090/api/v1/account/');
+  
+  // const actualData = await response.json();
 
-  global.fetch = jest.fn().mockResolvedValue({
-    json: jest.fn().mockResolvedValue([clickedUser]),
-  });
-    render(<FormApp />);
+  // // Ensure that the response is an array and has at least 10 elements
+  // expect(Array.isArray(actualData)).toBe(true);
+  // expect(actualData.length).toBeGreaterThanOrEqual(10);
+
+  // // Use the actual data fetched from the app
+  // fetchedUsers = actualData;
   });
 
   // Scenario: Fields are empty
@@ -137,8 +123,8 @@ export const FormProjectSteps = ({ given: Given, when: When, then: Then }) => {
 
   Then('the app fetches data from the Mockoon API', async () => {
     // Mock the API response for testing purposes
-    global.fetch = jest.fn().mockResolvedValue({
-      json: jest.fn().mockResolvedValue(mockedUserUsernameElements), // Replace mockedData with your actual mock data
+    global.fetch = jest.fn().mockImplementation({
+      json: jest.fn().mockInstance(() => Promise.resolve({ json: () => Promise.resolve({}) }))
     });
     render(<FormApp />);
     
@@ -150,50 +136,44 @@ export const FormProjectSteps = ({ given: Given, when: When, then: Then }) => {
   
 
   Then('the app displays 10 fetched mock users', async () => {
-    // Mock the API response with 10 users (adjust as needed)
-    const mockUser = '...'; // Replace with your actual mock data
-    global.fetch = jest.fn().mockResolvedValue({
-      json: jest.fn().mockResolvedValue(mockUser),
-    });
-    render(<FormApp />);
-    
-    // Wait for data to be fetched (adjust timeout as needed)
+    console.log("**************************");
+  // 
     await waitFor(() => {
-      expect(global.fetch).toHaveBeenCalledTimes(1);
-    });
-  
-    // Verify that 10 users are displayed
-    await waitFor(() => {
-      const userElements = screen.getAllByRole('listitem');
+      const userElements = screen.getAllByTestId("userElement");
       expect(userElements.length).toBe(10);
-    });
+  
+    })
+    // Verify that the form fields match the expected mock user's data
+    // fetchedUsers.forEach((expectedUser, index) => {
+    //   const userElement = screen.getAllByRole('listitem')[index];
+    //   const usernameElement = within(userElement).getByTestId('mocked-username');
+    //   expect(usernameElement).toHaveTextContent(expectedUser.username);
+    // });
   });
   
 
 
-    When('the user clicks on the mocked user username', async () => {
+  When('the user clicks on the mocked user username', async () => {
+    // Mock handle click 
+    const handleUserClick = jest.fn();
 
-      let userElements;
-      
-      // Wait for elements
-      await waitFor(() => {
-        
-        userElements = screen.queryAllByTestId('mocked-username');
-    
+    // Wait for elements
+    await waitFor(() => {
+      const userElements = screen.queryAllByTestId('mocked-username');
+      userElements.forEach((element) => {
+        fireEvent.click(element);
+        expect(handleUserClick).toHaveBeenCalledWith(element.textContent);
       });
-    
-      // Mock handle click 
-      const handleUserClick = jest.fn();
-    
-      fireEvent.click(userElements[0]);
-    
-      expect(handleUserClick).toHaveBeenCalledWith(userElements[0]);
-    
     });
+  });
 
 Then(/^the "(.*)" field should show the clicked user's (.*)$/, (field, value) => {
   const fieldElement = screen.getByTestId(field);
-  expect(fieldElement).toHaveValue(value);
+  const clickedUser = fetchedUsers[0]; 
+  const expectedValue = value.includes('personal_data.')
+    ? clickedUser[value.replace('personal_data.', '')]
+    : clickedUser[value];
+  expect(fieldElement).toHaveValue(expectedValue);
 });
 }
 

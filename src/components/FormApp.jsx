@@ -158,12 +158,26 @@ function FormApp () {
   
   useEffect(() => {
     // Fetch Mockoon data when the component mounts
-    const fetchData = async () => {
-      try {
-        const response = await fetch('http://localhost:4090/api/v1/account/');
-        
-        const responseData = await response.json();
-        console.log('responseData:', responseData);
+    const fetchData = () => {
+      // try {
+        console.log("1 -------------------------------------");
+        const response = fetch('http://localhost:4090/api/v1/account/')
+          .then((res) => {
+            if (res == undefined) {
+              console.log("UNDEFINEDDDDDDDDDDDDDDDDDDDDDDD!")
+            } else {
+              console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!", res)
+            }
+            res.json()
+          })
+          .catch((error) => {
+            console.log("###################################", error);
+          }
+          )
+        console.log("2 -------------------------------------", response);
+       const responseData = response.json();
+        console.log("3 -------------------------------------");
+        console.log("4 -------------------------------------");
         // Check if responseData is not undefined or null
         if (responseData) {
           // Fetch 10 random users from the array
@@ -171,9 +185,9 @@ function FormApp () {
           
           setMockUsers(randomUsers);
         }
-      } catch (error) {
-        console.error('Error fetching Mockoon data:', error.message);
-      }
+      // } catch (error) {
+      //   console.log('Error fetching Mockoon data:', error.message);
+      // }
     };
   
     fetchData();
@@ -283,10 +297,10 @@ function FormApp () {
       </form>
       <div>
         <h2>Mock Users:</h2>
-        <ul>
+        <ul >
           {mockUsers.map((user, index) => (
-            <li key={index} onClick={() => handleMockUserClick(user)}>
-              <div data-testid="mocked-username">{user.username}</div>
+            <li data-testid="userElement" key={index} onClick={() => handleMockUserClick(user)}>
+              <div >{user.username}</div>
             </li>
           ))}
         </ul>

@@ -7,7 +7,8 @@ Feature: Creating a form app for user interaction with React
   Scenario: The app fetches data from the mockoon API
 
     Then the app fetches data from the mockoon API
-    
+
+    @Single
   Scenario: The app displays mock users
 
     Then the app displays 10 fetched mock users
