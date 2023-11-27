@@ -280,17 +280,17 @@ function FormApp () {
         <p className="success-message" data-testid="success-message">
           {successMessage}
         </p>
-      </form>
-      <div>
+        <div data-testid="userElement">
         <h2>Mock Users:</h2>
         <ul>
           {mockUsers.map((user, index) => (
             <li key={index} onClick={() => handleMockUserClick(user)}>
-              <div data-testid="userElement">{user.username}</div>
+              <div data-testid="userMock">{user.username}</div>
             </li>
           ))}
         </ul>
       </div>
+      </form>
     </div>
   )
 }
