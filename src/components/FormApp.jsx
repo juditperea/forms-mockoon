@@ -9,6 +9,7 @@ import SubmitButton from './SubmitButton'
 import ClearButton from './ClearButton'
 import CityInput from './CityInput'
 import StreetInput from './StreetInput'
+import { act } from 'react-dom/test-utils';
 
 function FormApp () {
   const MAX_USERNAME_LENGTH = 10
@@ -48,8 +49,7 @@ function FormApp () {
     street: false,
     id: false
   })
-
-  
+ 
   function validateIDSpain (id, country) {
     const VALID_LETTERS = 'TRWAGMYFPDXBNJZSQVHLCKE'
     const ID_NUMBER = id.substring(0, id.length - 1)
@@ -169,7 +169,9 @@ function FormApp () {
           // Fetch 10 random users from the array
           const randomUsers = getRandomUsers(responseData, 10);
           
-          setMockUsers(randomUsers);
+          act(() => {
+            setMockUsers(randomUsers);
+          });
         }
       } catch (error) {
         console.error('Error fetching Mockoon data:', error.message);
