@@ -10,7 +10,7 @@ import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom";
 import FormApp from "../../components/FormApp";
 
-global.fetch = jest.fn().mockImplementation(() => Promise.resolve({ json: () => Promise.resolve([]) }));
+global.fetch = jest.fn().mockImplementation(() => Promise.resolve({ json: () => Promise.resolve(['http://localhost:4090/api/v1/account/']) }));
 let fetchedUsers;
 
 export const FormProjectSteps = ({ given: Given, when: When, then: Then }) => {
@@ -18,7 +18,7 @@ export const FormProjectSteps = ({ given: Given, when: When, then: Then }) => {
     render(<FormApp />);
     
     try {
-      global.fetch = jest.fn().mockImplementation(() => Promise.resolve({ json: () => Promise.resolve([]) }));
+      global.fetch = jest.fn().mockImplementation(() => Promise.resolve({ json: () => Promise.resolve([global.fetch]) }));
 
       const actualData = await response.json();
       console.log("ACTUAL DATA:" + actualData);
@@ -115,7 +115,7 @@ export const FormProjectSteps = ({ given: Given, when: When, then: Then }) => {
 
   Then('the app fetches data from the Mockoon API', async () => {
     // Mock the API response for testing purposes
-    global.fetch = jest.fn().mockImplementation(() => Promise.resolve({ json: () => Promise.resolve([/* mocked user data */]) }));
+    global.fetch = jest.fn().mockImplementation(() => Promise.resolve({ json: () => Promise.resolve(['http://localhost:4090/api/v1/account/']) }));
     render(<FormApp />);
     
     // Wait for data to be fetched (adjust timeout as needed)
@@ -124,9 +124,10 @@ export const FormProjectSteps = ({ given: Given, when: When, then: Then }) => {
     });
   });
 
-  Then('the app displays 10 fetched mock users', async () => {
+  Then('the app displays fetched mock users', async () => {
     await waitFor(() => {
-      const userElement = screen.getByTestId("userElement");
+      const userElement = screen.getByTestId("userMock");
+      expect(userElement).toBeInTheDocument;
     });
   });
   
@@ -135,11 +136,11 @@ export const FormProjectSteps = ({ given: Given, when: When, then: Then }) => {
     const handleUserClick = jest.fn();
 
     // Update the mock fetch implementation
-    global.fetch = jest.fn().mockImplementation(() => Promise.resolve({ json: () => Promise.resolve([/* mocked user data */]) }));
+    global.fetch = jest.fn().mockImplementation(() => Promise.resolve({ json: () => Promise.resolve(['http://localhost:4090/api/v1/account/']) }));
 
     // Wait for elements
     await waitFor(() => {
-      const userElements = screen.queryAllByTestId('mocked-username');
+      const userElements = screen.queryAllByTestId('userMock');
       userElements.forEach((element) => {
         fireEvent.click(element);
         expect(handleUserClick).toHaveBeenCalledWith(element.textContent);

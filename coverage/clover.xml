@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1701693729390" clover="3.2.0">
-  <project timestamp="1701693729390" name="All files">
-    <metrics statements="118" coveredstatements="92" conditionals="35" coveredconditionals="23" methods="38" coveredmethods="30" elements="191" coveredelements="145" complexity="0" loc="118" ncloc="118" packages="1" files="10" classes="10"/>
+<coverage generated="1701768068861" clover="3.2.0">
+  <project timestamp="1701768068861" name="All files">
+    <metrics statements="118" coveredstatements="94" conditionals="35" coveredconditionals="23" methods="38" coveredmethods="33" elements="191" coveredelements="150" complexity="0" loc="118" ncloc="118" packages="1" files="10" classes="10"/>
     <file name="CityInput.jsx" path="C:\Users\judit.perea\OneDrive - Travelport\Documents\GitHub\form-testing2\forms-mockoon\src\components\CityInput.jsx">
       <metrics statements="2" coveredstatements="2" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
       <line num="1" count="1" type="stmt"/>
@@ -21,7 +21,7 @@
       <line num="28" count="155" type="stmt"/>
     </file>
     <file name="FormApp.jsx" path="C:\Users\judit.perea\OneDrive - Travelport\Documents\GitHub\form-testing2\forms-mockoon\src\components\FormApp.jsx">
-      <metrics statements="95" coveredstatements="70" conditionals="23" coveredconditionals="11" methods="28" coveredmethods="21"/>
+      <metrics statements="95" coveredstatements="72" conditionals="23" coveredconditionals="11" methods="28" coveredmethods="24"/>
       <line num="1" count="1" type="stmt"/>
       <line num="2" count="1" type="stmt"/>
       <line num="3" count="1" type="stmt"/>
@@ -103,7 +103,7 @@
       <line num="177" count="0" type="stmt"/>
       <line num="181" count="11" type="stmt"/>
       <line num="185" count="155" type="stmt"/>
-      <line num="186" count="0" type="stmt"/>
+      <line num="186" count="9" type="stmt"/>
       <line num="198" count="155" type="stmt"/>
       <line num="200" count="11" type="stmt"/>
       <line num="202" count="11" type="stmt"/>
@@ -115,7 +115,7 @@
       <line num="244" count="0" type="stmt"/>
       <line num="256" count="7" type="stmt"/>
       <line num="267" count="13" type="stmt"/>
-      <line num="289" count="0" type="stmt"/>
+      <line num="289" count="144" type="stmt"/>
       <line num="300" count="11" type="stmt"/>
     </file>
     <file name="IDInput.jsx" path="C:\Users\judit.perea\OneDrive - Travelport\Documents\GitHub\form-testing2\forms-mockoon\src\components\IDInput.jsx">
