@@ -888,6 +888,14 @@
     "@types/yargs" "^17.0.8"
     chalk "^4.0.0"
 
+"@jgedff/utils32@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@jgedff/utils32/-/utils32-1.0.0.tgz#addbf039b23adef4d21aeb01d6b01f5243fe26b1"
+  integrity sha512-4jG7qvg3cP4xlSHIGUhNfk2pSNR1yKUtzsq9iaPdIR0IcKF+PQMbv1subTxJLWCPMTGkrDOg7xQz0XEAdu6HYQ==
+  dependencies:
+    console-log-colors "^0.4.0"
+    typescript "^5.3.3"
+
 "@jridgewell/gen-mapping@^0.3.0", "@jridgewell/gen-mapping@^0.3.2":
   version "0.3.3"
   resolved "https://registry.npmjs.org/@jridgewell/gen-mapping/-/gen-mapping-0.3.3.tgz"
@@ -2175,6 +2183,11 @@ concat-map@0.0.1:
   version "0.0.1"
   resolved "https://registry.npmjs.org/concat-map/-/concat-map-0.0.1.tgz"
   integrity sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==
+
+console-log-colors@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/console-log-colors/-/console-log-colors-0.4.0.tgz#35ebaa439416e6be069c4b08cc66c9a08d023f79"
+  integrity sha512-XX0qO0MUzbREpPrutavmOLML8h8IokzKTzJqMwvykBcL9D7bMbj5P17+driOjy4RaA99aIAkMDo8holIxYbbpQ==
 
 convert-source-map@^1.4.0, convert-source-map@^1.6.0, convert-source-map@^1.7.0:
   version "1.9.0"
@@ -6535,6 +6548,11 @@ typedarray-to-buffer@^3.1.5:
   integrity sha512-zdu8XMNEDepKKR+XYOXAVPtWui0ly0NtohUscw+UmaHiAWT8hrV1rr//H6V+0DvJ3OQ19S979M0laLfX8rm82Q==
   dependencies:
     is-typedarray "^1.0.0"
+
+typescript@^5.3.3:
+  version "5.3.3"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.3.3.tgz#b3ce6ba258e72e6305ba66f5c9b452aaee3ffe37"
+  integrity sha512-pXWcraxM0uxAS+tN0AG/BF2TyqmHO014Z070UsJ+pFvYuRSq8KH8DmWpnbXe0pEPDHXZV3FcAbJkijJ5oNEnWw==
 
 unbox-primitive@^1.0.2:
   version "1.0.2"

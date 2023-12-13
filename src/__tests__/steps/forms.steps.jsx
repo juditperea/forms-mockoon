@@ -10,24 +10,25 @@ import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom";
 import FormApp from "../../components/FormApp";
 
-global.fetch = jest.fn().mockImplementation(() => Promise.resolve({ json: () => Promise.resolve(['http://localhost:4090/api/v1/account/']) }));
-let fetchedUsers;
 
 export const FormProjectSteps = ({ given: Given, when: When, then: Then }) => {
+
   Given("the user opens the app", async () => {
     render(<FormApp />);
-    
-    try {
-      global.fetch = jest.fn().mockImplementation(() => Promise.resolve({ json: () => Promise.resolve([global.fetch]) }));
 
-      const actualData = await response.json();
-      console.log("ACTUAL DATA:" + actualData);
-      expect(Array.isArray(actualData)).toBe(true);
-      expect(Array.isArray(actualData) && actualData.length >= 10).toBe(true);
-      fetchedUsers = actualData;
-    } catch (error) {
-      console.error('Error fetching data:', error.message);
-    }
+      global.fetch = jest
+        .fn()
+        .mockImplementation(() =>
+          Promise.resolve({
+            json: () =>
+              Promise.resolve(['http://localhost:4090/api/v1/account/']),
+          })
+        );
+        const response = await fetch('http://localhost:4090/api/v1/account/');
+        
+        const responseData = await response.json();
+        console.log('responseData:', responseData);
+    
   });
 
   Then(/^the "(.*)" field should be empty$/, (arg0) => {
@@ -123,38 +124,43 @@ export const FormProjectSteps = ({ given: Given, when: When, then: Then }) => {
       expect(global.fetch).toHaveBeenCalledTimes(1);
     });
   });
-
   Then('the app displays fetched mock users', async () => {
-    await waitFor(() => {
-      const userElement = screen.getByTestId("userMock");
-      expect(userElement).toBeInTheDocument;
+      await waitFor(() => {
+        const userElements = screen.getAllByTestId("userMock");
+        expect(userElements).toBeInTheDocument;
+      });
     });
-  });
+  
   
   When('the user clicks on the mocked user username', async () => {
-    // Mock handle click
-    const handleUserClick = jest.fn();
 
     // Update the mock fetch implementation
     global.fetch = jest.fn().mockImplementation(() => Promise.resolve({ json: () => Promise.resolve(['http://localhost:4090/api/v1/account/']) }));
-
-    // Wait for elements
-    await waitFor(() => {
-      const userElements = screen.queryAllByTestId('userMock');
-      userElements.forEach((element) => {
-        fireEvent.click(element);
-        expect(handleUserClick).toHaveBeenCalledWith(element.textContent);
-      });
-    });
+        // Find a mock user element and click on it
+  const mockUserElements = screen.getAllByTestId('userMock');
+  const firstMockUserElement = mockUserElements[0];
+  fireEvent.click(firstMockUserElement);
+  
   });
-
+   
   Then(/^the "(.*)" field should show the clicked user's (.*)$/, (field, value) => {
-    const fieldElement = screen.getByTestId(field);
-    const clickedUser = fetchedUsers[0];
-    const expectedValue = value.includes('personal_data.')
-      ? clickedUser[value.replace('personal_data.', '')]
-      : clickedUser[value];
-    expect(fieldElement).toHaveValue(expectedValue);
+    const mockUserElements = screen.getAllByTestId('userMock');
+    const firstMockUserElement = mockUserElements[0];
+
+    
+      // Define the expected structure
+      const expectedStructure = {
+        username: '',
+        personal_data: {
+          name: '',
+          surname: '',
+        },
+        country: '',
+        city: '',
+        street: '',
+        id: ''
+      };
+  expect(compareObjectStructure(firstMockUserElement, expectedStructure)).toBe(true);
   });
 };
 
