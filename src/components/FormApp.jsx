@@ -1,22 +1,22 @@
-import React, { useEffect, useState } from 'react'
-import '../App.css'
-import UsernameInput from './UsernameInput'
-import NameInput from './NameInput'
-import SurnameInput from './SurnameInput'
-import CountrySelect from './CountrySelect'
-import IDInput from './IDInput'
-import SubmitButton from './SubmitButton'
-import ClearButton from './ClearButton'
-import CityInput from './CityInput'
-import StreetInput from './StreetInput'
+import React, { useEffect, useState } from 'react';
+import '../App.css';
+import UsernameInput from './UsernameInput';
+import NameInput from './NameInput';
+import SurnameInput from './SurnameInput';
+import CountrySelect from './CountrySelect';
+import IDInput from './IDInput';
+import SubmitButton from './SubmitButton';
+import ClearButton from './ClearButton';
+import CityInput from './CityInput';
+import StreetInput from './StreetInput';
 import { act } from 'react-dom/test-utils';
 
-function FormApp () {
-  const MAX_USERNAME_LENGTH = 10
-  const [usernameAlert, setUsernameAlert] = useState('')
-  const [isFormValid, setIsFormValid] = useState('')
-  const [successMessage, setSuccessMessage] = useState('')
-  const [idAlert, setIdAlert] = useState('')
+function FormApp() {
+  const MAX_USERNAME_LENGTH = 10;
+  const [usernameAlert, setUsernameAlert] = useState('');
+  const [isFormValid, setIsFormValid] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+  const [idAlert, setIdAlert] = useState('');
   const [mockUsers, setMockUsers] = useState([]);
   const [formData, setFormData] = useState({
     username: '',
@@ -25,8 +25,9 @@ function FormApp () {
     country: '',
     city: '',
     street: '',
-    id: ''
-  })
+    id: '',
+  });
+
   const clearForm = () => {
     setFormData({
       username: '',
@@ -35,11 +36,11 @@ function FormApp () {
       country: '',
       city: '',
       street: '',
-      id: ''
-    })
-    
-    setSuccessMessage('')
-  }
+      id: '',
+    });
+    setSuccessMessage('');
+  };
+
   const [errorFields, setErrorFields] = useState({
     username: false,
     name: false,
@@ -47,94 +48,90 @@ function FormApp () {
     country: false,
     city: false,
     street: false,
-    id: false
-  })
- 
-  function validateIDSpain (id, country) {
-    const VALID_LETTERS = 'TRWAGMYFPDXBNJZSQVHLCKE'
-    const ID_NUMBER = id.substring(0, id.length - 1)
-    const ID_LETTER = id.charAt(id.length - 1).toUpperCase()
-    const calculatedLetter = VALID_LETTERS[ID_NUMBER % 23]
+    id: false,
+  });
+
+  // Validation functions
+  function validateIDSpain(id, country) {
+    const VALID_LETTERS = 'TRWAGMYFPDXBNJZSQVHLCKE';
+    const ID_NUMBER = id.substring(0, id.length - 1);
+    const ID_LETTER = id.charAt(id.length - 1).toUpperCase();
+    const calculatedLetter = VALID_LETTERS[ID_NUMBER % 23];
 
     if (country === 'SPAIN') {
       if (id.length !== 9) {
-        return false
+        return false;
       }
       if (!/^\d+$/.test(ID_NUMBER)) {
-        return false
+        return false;
       }
-      return ID_LETTER === calculatedLetter
-    } 
-  }
-  function validateIDArgentina(id){
-      id = id.replace(/\s|-/g, '')
-    
-      return /^\d{7,8}$/.test(id)
-    
+      return ID_LETTER === calculatedLetter;
+    }
   }
 
+  function validateIDArgentina(id) {
+    id = id.replace(/\s|-/g, '');
+    return /^\d{7,8}$/.test(id);
+  }
 
-  function validateID (id, country) {
+  function validateID(id, country) {
     if (country === 'SPAIN') {
-      if (!validateIDSpain(id,country)) {
-        setIdAlert('Enter a valid ID for Spain')
+      if (!validateIDSpain(id, country)) {
+        setIdAlert('Enter a valid ID for Spain');
       } else {
-        setIdAlert('')
+        setIdAlert('');
       }
     } else if (country === 'ARGENTINA') {
-      if (!validateIDArgentina(id,country)) {
-        setIdAlert('Enter a valid ID for Argentina')
+      if (!validateIDArgentina(id, country)) {
+        setIdAlert('Enter a valid ID for Argentina');
       } else {
-        setIdAlert('')
+        setIdAlert('');
       }
     }
   }
 
-  function validateUsernameLength (username) {
-    return username.length <= MAX_USERNAME_LENGTH
+  function validateUsernameLength(username) {
+    return username.length <= MAX_USERNAME_LENGTH;
   }
 
-  function validateUsername (username) {
+  function validateUsername(username) {
     const isFirstNameInUsername =
-      username.includes(formData.name) && formData.name != ''
+      username.includes(formData.name) && formData.name !== '';
     if (!validateUsernameLength(username)) {
-      setUsernameAlert('Username must be 10 or less characters')
+      setUsernameAlert('Username must be 10 or less characters');
     } else if (isFirstNameInUsername) {
-      setUsernameAlert("The name can't be included in the username")
+      setUsernameAlert("The name can't be included in the username");
     } else {
-      setUsernameAlert('')
+      setUsernameAlert('');
     }
   }
-  
-  useEffect(() => {
-    validateUsername(formData.username)
-    return () => {
-      setUsernameAlert('')
-    }
-  }, [formData.username, formData.name])
 
   useEffect(() => {
-    validateID(formData.id, formData.country)
+    validateUsername(formData.username);
     return () => {
-      setIdAlert('')
-    }
-  }, [formData.id, formData.country])
+      setUsernameAlert('');
+    };
+  }, [formData.username, formData.name]);
 
-  const handleIDChange = e => {
-    const newID = e.target.value
-    setFormData({ ...formData, id: newID })
-  }
+  useEffect(() => {
+    validateID(formData.id, formData.country);
+    return () => {
+      setIdAlert('');
+    };
+  }, [formData.id, formData.country]);
+
+  const handleIDChange = (e) => {
+    const newID = e.target.value;
+    setFormData({ ...formData, id: newID });
+  };
+
   function handleSubmit(e) {
-    e.preventDefault()
-  
-    // Check if none of the fields are empty
-    const noEmptyFields = Object.values(formData).every(value => value !== '')
-  
-    // Check if there are no alerts
-    const noAlerts = usernameAlert === '' && idAlert === ''
-  
+    e.preventDefault();
+
+    const noEmptyFields = Object.values(formData).every((value) => value !== '');
+    const noAlerts = usernameAlert === '' && idAlert === '';
+
     if (noEmptyFields && noAlerts) {
-      // Construct the user object from the state of your React component
       const user = {
         username: formData.username,
         name: formData.name,
@@ -144,31 +141,20 @@ function FormApp () {
         street: formData.street,
         id: formData.id,
       };
-  
-      // Set the success message
-      setSuccessMessage('User created successfully')
+      setSuccessMessage('User created successfully');
     } else {
-      // Clear the success message if the conditions are not met
-      setSuccessMessage('')
+      setSuccessMessage('');
     }
   }
-  
-  
 
-  
   useEffect(() => {
-    // Fetch Mockoon data when the component mounts
     const fetchData = async () => {
       try {
         const response = await fetch('http://localhost:4090/api/v1/account/');
-        
         const responseData = await response.json();
         console.log('responseData:', responseData);
-        // Check if responseData is not undefined or null
         if (responseData) {
-          // Fetch 10 random users from the array
           const randomUsers = getRandomUsers(responseData, 10);
-          
           act(() => {
             setMockUsers(randomUsers);
           });
@@ -177,10 +163,9 @@ function FormApp () {
         console.error('Error fetching Mockoon data:', error.message);
       }
     };
-  
+
     fetchData();
   }, []);
-  
 
   const handleMockUserClick = (mockUser) => {
     setFormData({
@@ -191,25 +176,18 @@ function FormApp () {
       city: mockUser.city,
       street: mockUser.street,
       id: mockUser.user_id,
-    })
-  }
-  
+    });
+  };
 
   const getRandomUsers = (responseData, count) => {
-    // Create a copy of the array to avoid modifying the original array
     const userArray = [...responseData];
-    // Shuffle the copied array
     const shuffled = userArray.sort(() => 0.5 - Math.random());
-  
-  
-    // Return the sliced array
     return shuffled.slice(0, count);
   };
-  
-  
+
   return (
-    <div>
-      <form>
+    <div className="container">
+      <form className="form" onSubmit={handleSubmit}>
         <UsernameInput
           value={formData.username}
           onChange={(e) =>
@@ -239,15 +217,14 @@ function FormApp () {
           }
         />
         <CountrySelect
-        value={formData.country}
-        onChange={(e) =>
-          setFormData({
-            ...formData,
-            country: e.target.value,
-          })
-        }
-      />
-
+          value={formData.country}
+          onChange={(e) =>
+            setFormData({
+              ...formData,
+              country: e.target.value,
+            })
+          }
+        />
         <CityInput
           type="text"
           placeholder="City"
@@ -270,11 +247,7 @@ function FormApp () {
             })
           }
         />
-        <IDInput
-          value={formData.id}
-          onChange={handleIDChange}
-          idAlert={idAlert}
-        />
+        <IDInput value={formData.id} onChange={handleIDChange} idAlert={idAlert} />
         <div className="buttondiv">
           <SubmitButton onClick={handleSubmit} />
           <ClearButton onClick={clearForm} />
@@ -282,19 +255,20 @@ function FormApp () {
         <p className="success-message" data-testid="success-message">
           {successMessage}
         </p>
-        <div data-testid="userElement">
-        <h2>Mock Users:</h2>
-        <ul>
-          {mockUsers.map((user, index) => (
-            <li key={index} onClick={() => handleMockUserClick(user)}>
-              <div data-testid="userMock">{user.username}</div>
-            </li>
-          ))}
-        </ul>
-      </div>
       </form>
+      <div data-testid="userElement">
+  <h2>Mock Users</h2>
+  <ul className="mock-users-list">
+    {mockUsers.map((user, index) => (
+      <li key={index} onClick={() => handleMockUserClick(user)} className="mock-user-item">
+        <div data-testid="userMock" className="mock-user">{user.username}</div>
+      </li>
+    ))}
+  </ul>
+</div>
+
     </div>
-  )
+  );
 }
 
-export default FormApp
+export default FormApp;

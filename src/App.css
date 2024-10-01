@@ -1,3 +1,7 @@
+body{
+  height:100vh;
+  overflow: hidden;
+}
 #root {
   max-width: 1280px;
   margin: 0 auto;
@@ -11,9 +15,11 @@
   will-change: filter;
   transition: filter 300ms;
 }
+
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
+
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
@@ -22,6 +28,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -42,14 +49,16 @@
 }
 
 .success-message {
-    color: #55fb46;
-    margin-top: 16px;
-  }
+  color: #55fb46;
+  margin-top: 16px;
+}
+
 .message-error {
   color: #e60f0f;
   font-style: italic;
   margin-top: 16px;
 }
+
 .submit:hover {
   filter: drop-shadow(0 0 1em #646cffaa);
 }
@@ -58,25 +67,79 @@
   color: #2559f4;
   margin-top: 16px;
   margin-right: 16px;
-  }
-.clear {
-color: #ec4747;
-margin-top: 16px;
 }
+
+.clear {
+  color: #ec4747;
+  margin-top: 16px;
+}
+
 .clear:hover {
   filter: drop-shadow(0 0 1em #ec4747);
-  }
-.buttondiv{
-  display: flex;  
+}
+
+.buttondiv {
+  display: flex;
   flex-direction: row;
   gap: 0;
 }
 
-.nooption{
-    color: #5e5a5a;
-    }
+.nooption {
+  color: #5e5a5a;
+}
 
-    .error-field {
-      border: 1px solid red;
-      background-color: rgba(255, 0, 0, 0.1); 
-    }
+.error-field {
+  border: 1px solid red;
+  background-color: rgba(255, 0, 0, 0.1);
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  max-width: 1280px;
+  margin: 50px;
+  padding: 10mm;
+  text-align: center;
+}
+
+.form {
+  flex: 1;
+  margin-right: 50px;
+}
+
+.mock-users-list {
+  list-style-type: none; 
+  padding: 0; 
+  margin-left:50px;
+}
+
+.mock-user {
+  padding:5px;
+  margin:15px;
+  color:#000000;
+  background-color: #e7fcdd;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border:4px solid rgb(86, 254, 25);
+  border-style: double;
+  border-radius:20px;
+}
+
+.mock-user {
+  transition: box-shadow 0.3s ease;
+}
+
+.mock-user:hover {
+  box-shadow: 0 4px 20px rgba(85, 251, 70, 0.5); 
+}
+
+
+.userMock {
+  margin: 20px;
+}
+
+h2{
+  margin-left:10mm;
+}
